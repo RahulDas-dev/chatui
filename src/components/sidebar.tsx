@@ -1,6 +1,8 @@
 import React, { FC, useState } from 'react';
+import { useTheme } from '../hooks/useTheme';
 import DocumentUpload from './doc_upload';
-import { ChevronLeft, ChevronRight, Plus, Search, History, FileText, User } from 'lucide-react';
+import { UserProfile } from './user/profile';
+import { ChevronLeft, Plus, Search, History, FileText } from 'lucide-react';
 
 interface ISideBarProps {
   isVisible: boolean;
@@ -8,6 +10,7 @@ interface ISideBarProps {
 }
 
 const SideBar: FC<ISideBarProps> = ({ isVisible, toggleSidebar }) => {
+  const { theme } = useTheme();
   const [activeSection, setActiveSection] = useState<'chats' | 'docs'>('chats');
   const [chatHistory] = useState([
     { id: '1', title: 'RAG Implementation' },
@@ -16,17 +19,14 @@ const SideBar: FC<ISideBarProps> = ({ isVisible, toggleSidebar }) => {
   ]);
 
   return (
-    <div className={`bg-gray-50 dark:bg-gray-800 h-full ${isVisible ? '' : 'hidden'} w-72 flex flex-col transition-all duration-300 shadow-xl border-r border-gray-200 dark:border-gray-700`}>
-      {/* Profile Section */}
-      <div className="p-4 border-b border-gray-200 dark:border-gray-700 flex items-center space-x-3">
-        <div className="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-white">
-          <User size={20} />
-        </div>
-        <div>
-          <p className="font-medium text-gray-900 dark:text-white">User Name</p>
-          <p className="text-xs text-gray-500 dark:text-gray-400">Free Plan</p>
-        </div>
-      </div>
+    <div className={`bg-gray-50 dark:bg-gray-900 h-full ${isVisible ? '' : 'hidden'} w-72 flex flex-col transition-all duration-300 shadow-xl border-r border-gray-200 dark:border-gray-700`}>
+      {/* Enhanced Profile Section */}
+      <UserProfile 
+        name="User Name"
+        email="user@example.com" 
+        plan="Pro Plan"
+        status="active"
+      />
 
       {/* Navigation Tabs */}
       <div className="flex border-b border-gray-200 dark:border-gray-700">
