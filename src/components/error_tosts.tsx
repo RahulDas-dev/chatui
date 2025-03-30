@@ -8,16 +8,18 @@ interface ErrorToastProps {
 }
 
 const ErrorToast: React.FC<ErrorToastProps> = ({ error, onDismiss }) => {
-  const bgColor = {
-    warning: 'bg-amber-100',
-    error: 'bg-red-100',
-    info: 'bg-blue-100'
+    const bgColor = {
+      warning: 'bg-amber-100 dark:bg-amber-600',
+      error: 'bg-red-100 dark:bg-red-600',
+      info: 'bg-blue-100 dark:bg-blue-600'
+
   }[error.severity];
 
-  const borderColor = {
-    warning: 'border-amber-500',
-    error: 'border-red-500',
-    info: 'border-blue-500'
+    const borderColor = {
+      warning: 'border-amber-500 dark:border-amber-400',
+      error: 'border-red-500 dark:border-red-400',
+      info: 'border-blue-500 dark:border-blue-400'
+
   }[error.severity];
 
   return (

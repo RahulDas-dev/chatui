@@ -28,7 +28,8 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
     <div className={`max-w-[80%] rounded-xl p-4 ${
       sender === 'user' 
         ? 'bg-blue-200 text-black shadow-md' 
-        : 'bg-white border border-gray-200 shadow-sm'
+        : 'bg-white border border-gray-200 shadow-sm dark:bg-gray-800 dark:border-gray-700 dark:text-white'
+
     } transition-all duration-200`}>
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
@@ -39,7 +40,8 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
             className?: string;
             children?: React.ReactNode;
           }) {
-            const {node, inline, className, children, ...rest} = props;
+            const {inline, className, children} = props;
+
             const match = /language-(\w+)/.exec(className || '');
             return !inline ? (
               <SyntaxHighlighter

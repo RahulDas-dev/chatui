@@ -73,6 +73,7 @@ Error Handling Improvements:
 [ ] Retry mechanisms
 [ ] Error analytics
 Files: error_modal.tsx, error_tosts.tsx, useErrorHandling.ts
+
 Testing Strategy:
 [ ] Component tests (Jest)
 [ ] E2E tests (Cypress)

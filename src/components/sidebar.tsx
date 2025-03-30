@@ -1,8 +1,8 @@
 import React, { FC, useState } from 'react';
-import { useTheme } from '../hooks/useTheme';
 import DocumentUpload from './doc_upload';
 import { UserProfile } from './user/profile';
 import { ChevronLeft, Plus, Search, History, FileText } from 'lucide-react';
+import CollapsibleSection from './common/collapsible_section';
 
 interface ISideBarProps {
   isVisible: boolean;
@@ -10,7 +10,6 @@ interface ISideBarProps {
 }
 
 const SideBar: FC<ISideBarProps> = ({ isVisible, toggleSidebar }) => {
-  const { theme } = useTheme();
   const [activeSection, setActiveSection] = useState<'chats' | 'docs'>('chats');
   const [chatHistory] = useState([
     { id: '1', title: 'RAG Implementation' },
@@ -76,8 +75,11 @@ const SideBar: FC<ISideBarProps> = ({ isVisible, toggleSidebar }) => {
               New Chat
             </button>
 
-            <div className="space-y-1">
-              <h3 className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider px-2">Recent Chats</h3>
+            <CollapsibleSection 
+              title="Recent Chats" 
+              icon={<History size={14} />}
+              defaultOpen={true}
+            >
               {chatHistory.map(chat => (
                 <button
                   key={chat.id}
@@ -86,7 +88,7 @@ const SideBar: FC<ISideBarProps> = ({ isVisible, toggleSidebar }) => {
                   {chat.title}
                 </button>
               ))}
-            </div>
+            </CollapsibleSection>
           </div>
         ) : (
           <DocumentUpload />

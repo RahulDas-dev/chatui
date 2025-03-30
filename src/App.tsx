@@ -2,8 +2,7 @@ import './App.css';
 import ChatArea from './components/chatarea/chatarea';
 import SideBar from './components/sidebar';
 import TitleBar from './components/titlebar';
-import React, { FC, useState } from 'react';
-import { ThemeProvider } from './hooks/useTheme';
+import { FC, useState } from 'react';
 
 const App: FC = () => {
   const [isVisible, setIsVisible] = useState<boolean>(true);
@@ -13,15 +12,13 @@ const App: FC = () => {
   };
 
   return (
-    <ThemeProvider>
-      <div className='app flex flex-row h-screen dark:bg-gray-900'>
+      <div className='app flex flex-row h-screen'>
         <SideBar isVisible={isVisible} toggleSidebar={toggleSidebar} />
-        <div className='app-body flex-1 h-full bg-amber-400'>
+        <div className='app-body flex-1 h-full'>
           <TitleBar toggleSidebar={toggleSidebar} />
           <ChatArea />
         </div>
       </div>
-    </ThemeProvider>
   );
 }
 

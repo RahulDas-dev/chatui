@@ -22,10 +22,12 @@ export const ThemeProvider: React.FC<{children: React.ReactNode}> = ({ children 
   }, []);
 
   const toggleTheme = () => {
+    console.log("Toggling theme from", theme); // Log current theme
     const newTheme = theme === 'light' ? 'dark' : 'light';
     setTheme(newTheme);
     localStorage.setItem('theme', newTheme);
     document.documentElement.classList.toggle('dark', newTheme === 'dark');
+    console.log("New theme is", newTheme); // Log new theme
   };
 
   return (

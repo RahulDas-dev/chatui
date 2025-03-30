@@ -1,7 +1,7 @@
 import React from 'react';
 import type { ErrorType } from '../services/error_services';
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
-import { useTheme } from '../hooks/useTheme';
+
 
 interface ErrorModalProps {
   error: ErrorType;
@@ -9,7 +9,7 @@ interface ErrorModalProps {
 }
 
 const ErrorModal: React.FC<ErrorModalProps> = ({ error, onClose }) => {
-  const { theme } = useTheme();
+
   
   const iconColor = {
     warning: 'text-amber-500',
@@ -17,10 +17,11 @@ const ErrorModal: React.FC<ErrorModalProps> = ({ error, onClose }) => {
     info: 'text-blue-500'
   }[error.severity];
 
-  const bgColor = theme === 'dark' ? 'bg-gray-800' : 'bg-white';
-  const textColor = theme === 'dark' ? 'text-gray-100' : 'text-gray-900';
-  const secondaryTextColor = theme === 'dark' ? 'text-gray-300' : 'text-gray-500';
-  const footerBg = theme === 'dark' ? 'bg-gray-700' : 'bg-gray-50';
+  const bgColor = 'bg-gray-800';
+  const textColor = 'text-gray-100';
+  const secondaryTextColor = 'text-gray-300';
+  const footerBg = 'bg-gray-700';
+
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
