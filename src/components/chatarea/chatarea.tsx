@@ -88,7 +88,7 @@ const ChatArea: FC = () => {
         ))}
       </div>
       
-      <div className={`p-4 border-t bg-white border-gray-200 dark:bg-gray-800 dark:border-gray-700`}>
+      <div className={`p-4 bg-white  dark:bg-gray-900 `}>
         <div className="flex gap-2">
           <input
             type="text"
@@ -101,7 +101,6 @@ const ChatArea: FC = () => {
               }
               typingTimeoutRef.current = window.setTimeout(() => setIsTyping(false), 2000);
             }}
-            onKeyPress={(e) => e.key === 'Enter' && handleSend()}
             className={`flex-1 border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white border-gray-300 text-gray-900 placeholder-gray-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400`}
             placeholder="Type your message..."
           />

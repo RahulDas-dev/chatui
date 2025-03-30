@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import DocumentReview from './document_review'; // Import DocumentReview component
+
 import RAGService from '../services/rag_services';
 import useErrorHandling from '../hooks/useErrorHandling';
 import { Upload, FileText, X, Check, Loader2 } from 'lucide-react';
@@ -94,7 +96,12 @@ const DocumentUpload: React.FC = () => {
         />
       </label>
 
-      {files.length > 0 && (
+      <DocumentReview 
+        files={files} 
+        onRemove={removeFile} // Pass the remove function
+      />
+      {files.length > 0 && ( 
+
         <div className="space-y-2">
           <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300">Uploaded Files</h3>
           <div className="space-y-2 max-h-60 overflow-y-auto">
