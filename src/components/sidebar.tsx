@@ -12,6 +12,9 @@ interface ISideBarProps {
 const SideBar: FC<ISideBarProps> = ({ isVisible, toggleSidebar }) => {
   const [activeSection, setActiveSection] = useState<'chats' | 'docs'>('chats');
 
+  const handleNewChat = () => {
+    // Function to reset chat state
+  };
 
   return (
     <div className={`bg-gray-50 dark:bg-gray-900 h-full ${isVisible ? '' : 'hidden'} w-72 flex flex-col transition-all duration-300 shadow-xl border-r border-gray-200 dark:border-gray-700`}>
@@ -24,7 +27,11 @@ const SideBar: FC<ISideBarProps> = ({ isVisible, toggleSidebar }) => {
         <ChevronLeft size={16} />
       </button>
 
-      <button className=" w-full space-y-4 flex items-center justify-center gap-2 py-2 px-3 text-sm font-medium dark:text-gray-100  text-gray-800 bg-gray-200 dark:bg-gray-950 transition-colors">
+      <button 
+        onClick={handleNewChat} 
+        aria-label="Start a new chat"
+        className="w-full space-y-4 flex items-center justify-center gap-2 py-2 px-3 text-sm font-medium dark:text-gray-100 text-gray-800 bg-gray-200 dark:bg-gray-950 transition-colors"
+      >
         <Plus size={16} />
         New Chat
       </button>

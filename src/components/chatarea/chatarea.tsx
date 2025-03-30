@@ -35,6 +35,11 @@ const ChatArea: FC = () => {
   const typingTimeoutRef = useRef<number | null>(null);
 
   const handleSend = async () => {
+    // Reset chat state logic here
+    setMessages([]);
+    setInputValue('');
+
+
     if (!inputValue.trim()) return;
     
     const userMessage = {
@@ -88,7 +93,7 @@ const ChatArea: FC = () => {
         ))}
       </div>
       
-      <div className={`p-4 bg-white  dark:bg-gray-900 `}>
+      <div className={`p-4 bg-gray-50 dark:bg-gray-900 `}>
         <div className="flex gap-2">
           <input
             type="text"

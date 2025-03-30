@@ -9,7 +9,8 @@ export default defineConfig(({ mode }) => {
   return {
     plugins: [tailwindcss(), react()],
     define: {
-      'import.meta.env.VITE_RAG_API_URL': JSON.stringify(env.VITE_RAG_API_URL)
+      'import.meta.env.VITE_RAG_API_URL': JSON.stringify(env.VITE_RAG_API_URL),
+      'import.meta.env.VITE_CHAT_HISTORY_URL': JSON.stringify(env.VITE_CHAT_HISTORY_URL)
     }
   }
 })

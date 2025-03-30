@@ -47,7 +47,7 @@ class ErrorService {
     // Default case
     return {
       title: "Error",
-      message: (axiosError.response.data as any)?.message || "An unexpected error occurred",
+      message: (axiosError.response?.data as { message?: string })?.message || "An unexpected error occurred",
       severity: "error",
       retryable: false
     };

@@ -14,12 +14,13 @@ interface UploadedFile {
 }
 
 const DocumentUpload: React.FC = () => {
+  const [uploadProgress, setUploadProgress] = useState<{ [key: string]: number }>({});
   const [files, setFiles] = useState<UploadedFile[]>([]);
   const { handleError } = useErrorHandling();
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
-    
+
     const newFiles = Array.from(e.target.files).map(file => {
       // Validate file type
       const validTypes = ['application/pdf', 'text/plain', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
@@ -54,9 +55,15 @@ const DocumentUpload: React.FC = () => {
     setFiles(prev => [...prev, ...newFiles]);
 
     // Process uploads
-    newFiles.forEach(async (file) => {
+    newFiles.forEach(async (file) => { 
+      const abortController = new AbortController();
+
+      const progressCallback = (percentage: number) => {
+        setUploadProgress(prev => ({ ...prev, [file.id]: percentage }));
+      };
+
       try {
-        await RAGService.uploadDocument(file.file);
+        await RAGService.uploadDocument(file.file, progressCallback, abortController.signal);
         setFiles(prev => prev.map(f => 
           f.id === file.id ? {...f, status: 'success'} : f
         ));
@@ -101,8 +108,21 @@ const DocumentUpload: React.FC = () => {
         onRemove={removeFile} // Pass the remove function
       />
       {files.length > 0 && ( 
-
         <div className="space-y-2">
+          {files.map(file => (
+            <div key={file.id}>
+              {file.status === 'uploading' && (
+                <div className="w-full bg-gray-200 rounded-full">
+                  <div
+                    className="bg-blue-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full"
+                    style={{ width: `${uploadProgress[file.id] || 0}%` }}
+                  >
+                    {uploadProgress[file.id] || 0}%
+                  </div>
+                </div>
+              )}
+            </div>
+          ))}
           <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300">Uploaded Files</h3>
           <div className="space-y-2 max-h-60 overflow-y-auto">
             {files.map(file => (
@@ -137,10 +157,7 @@ const DocumentUpload: React.FC = () => {
                   {file.status === 'error' && (
                     <X className="h-4 w-4 text-red-500" />
                   )}
-                  <button
-                    onClick={() => removeFile(file.id)}
-                    className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
-                  >
+                  <button onClick={() => removeFile(file.id)} className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
                     <X className="h-4 w-4" />
                   </button>
                 </div>
