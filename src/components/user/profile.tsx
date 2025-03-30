@@ -1,6 +1,5 @@
 // Temporary implementation - will replace UserProfile.tsx once verified
 import * as React from 'react';
-import { useTheme } from '../../hooks/useTheme';
 import { User, Settings, LogOut } from 'lucide-react';
 
 type UserStatus = 'active' | 'idle' | 'offline';
@@ -26,7 +25,6 @@ export const UserProfile: React.FC<ProfileProps> = ({
   status = 'active',
   avatarUrl
 }) => {
-  const { theme } = useTheme();
   const [isOpen, setIsOpen] = React.useState(false);
 
   return (

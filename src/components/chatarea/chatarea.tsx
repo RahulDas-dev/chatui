@@ -1,4 +1,4 @@
-import React, { FC, useState, useRef } from 'react';
+import  { FC, useState, useRef } from 'react';
 import { PaperAirplaneIcon } from '@heroicons/react/24/solid';
 import TypingIndicator from './typing_indicator';
 import useErrorHandling from '../../hooks/useErrorHandling';
