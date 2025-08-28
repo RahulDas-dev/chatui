@@ -1,8 +1,8 @@
 import { useContext } from 'react';
-import { ThemeContext } from '../context/ThemeContext';
+import { ChatContext } from '../context/ChatContextValue';
 
-export function useTheme() {
-  const context = useContext(ThemeContext);
+export function useChatContext() {
+  const context = useContext(ChatContext);
   if (!context) {
     throw new Error('useTheme must be used within a ThemeProvider');
   }

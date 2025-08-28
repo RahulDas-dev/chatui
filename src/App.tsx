@@ -1,24 +1,30 @@
-import './App.css';
-import ChatArea from './components/chatarea/chatarea';
-import SideBar from './components/sidebar';
-import TitleBar from './components/titlebar';
-import { FC, useState } from 'react';
+/* import TitleBar from './components/TitleBar'; */
+import { ErrorBoundary } from './components/ErrorBoundary';
+import { HomePage } from './pages/home';
+import { ToastContainer } from './components/ui/Toasts';
+import { Routes, Route } from 'react-router-dom';
+import ChatContextProvider from './context/ChatContextProvider';
 
-const App: FC = () => {
-  const [isVisible, setIsVisible] = useState<boolean>(true);
+// Wrapper component to apply ChatContextProvider to HomePage
 
-  const toggleSidebar = () => {
-    setIsVisible(!isVisible);
-  };
+function App() {
+  const HomePageWithChat = () => (
+    <ChatContextProvider>
+      <HomePage />
+    </ChatContextProvider>
+  );
 
   return (
-      <div className='app flex flex-row h-screen'>
-        <SideBar isVisible={isVisible} toggleSidebar={toggleSidebar} />
-        <div className='app-body flex-1 h-full'>
-          <TitleBar toggleSidebar={toggleSidebar} />
-          <ChatArea />
-        </div>
-      </div>
+    <ErrorBoundary>
+      {/* <TitleBar title={import.meta.env.VITE_APP_TITLE} /> */}
+      <main>
+        <Routes>
+          <Route path="/" element={<HomePageWithChat />} />
+          <Route path="*" element={<HomePageWithChat />} />
+        </Routes>
+      </main>
+      <ToastContainer />
+    </ErrorBoundary>
   );
 }
 
