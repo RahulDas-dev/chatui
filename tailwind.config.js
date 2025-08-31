@@ -1,10 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 
 export default {
-  content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
-  ],
+  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   darkMode: 'class',
   theme: {
     extend: {
@@ -12,10 +9,11 @@ export default {
         gray: {
           750: '#2d3748', // A mid-dark gray for the dark theme
         },
-      },      animation: {
-        'fadeIn': 'fadeIn 0.3s ease-in-out',
-        'slideInRight': 'slideInRight 0.3s ease-out',
-        'slideOutRight': 'slideOutRight 0.3s ease-in',
+      },
+      animation: {
+        fadeIn: 'fadeIn 0.3s ease-in-out',
+        slideInRight: 'slideInRight 0.3s ease-out',
+        slideOutRight: 'slideOutRight 0.3s ease-in',
         'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
         'robot-pulse': 'robotPulse 1.5s ease-in-out infinite',
         'robot-blink': 'robotBlink 3s ease-in-out infinite',
@@ -23,8 +21,9 @@ export default {
         'typing-dot-1': 'typingDot 1s infinite',
         'typing-dot-2': 'typingDot 1s infinite 0.2s',
         'typing-dot-3': 'typingDot 1s infinite 0.4s',
-        'glow': 'glow 1.5s ease-in-out infinite',
-      },      keyframes: {
+        glow: 'glow 1.5s ease-in-out infinite',
+      },
+      keyframes: {
         fadeIn: {
           '0%': { opacity: '0' },
           '100%': { opacity: '1' },
@@ -56,16 +55,16 @@ export default {
         },
       },
       transitionProperty: {
-        'height': 'height',
-        'spacing': 'margin, padding',
+        height: 'height',
+        spacing: 'margin, padding',
       },
       boxShadow: {
-        'card': '0 2px 4px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.1)',
+        card: '0 2px 4px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.1)',
       },
       borderRadius: {
-        'xl': '1rem',
+        xl: '1rem',
       },
     },
   },
   plugins: [],
-}
+};
