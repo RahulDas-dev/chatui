@@ -1,28 +1,8 @@
 import './index.css';
 import { v4 as uuidv4 } from 'uuid';
 import { createIcons, Moon, Sun, Send, Menu, X, Plus } from 'lucide';
-
-// Types
-interface Message {
-    id: string;
-    text: string;
-    timestamp: Date;
-    sender: 'user' | 'bot';
-}
-
-interface ChatSession {
-    id: string;
-    name?: string; // Optional custom name for the chat
-    messages: Message[];
-    createdAt: Date;
-    updatedAt: Date;
-}
-
-interface ChatState {
-    sessions: ChatSession[];
-    currentSessionId: string | null;
-    isTyping: boolean;
-}
+import { chatService } from './services/chatService';
+import type { Message, ChatSession, ChatState, ChatRequest } from './types';
 
 // Chat Class
 class ChatUI {
@@ -64,7 +44,7 @@ class ChatUI {
         this.init();
     }
 
-    private init(): void {
+    private async init(): Promise<void> {
         // Initialize all Lucide icons
         createIcons({
             icons: {
@@ -82,11 +62,27 @@ class ChatUI {
         this.setupTheme();
         this.updateChatHistory();
         
+        // Check API health
+        this.checkApiHealth();
+        
         // Load current session or create new one
         if (this.state.currentSessionId && this.getCurrentSession()) {
             this.loadChatSession(this.state.currentSessionId);
         } else {
             this.addWelcomeMessage();
+        }
+    }
+
+    private async checkApiHealth(): Promise<void> {
+        try {
+            const isHealthy = await chatService.healthCheck();
+            if (isHealthy) {
+                console.log('✅ Chat API is available');
+            } else {
+                console.warn('⚠️ Chat API is not available, using fallback responses');
+            }
+        } catch {
+            console.warn('⚠️ Unable to check API health, using fallback responses');
         }
     }
 
@@ -204,45 +200,53 @@ class ChatUI {
         this.addMessage(userMessage);
         this.messageInput.value = '';
 
-        // Simulate bot response
-        this.simulateBotResponse(text);
+        // Get bot response from API
+        this.getBotResponse(text);
     }
 
-    private simulateBotResponse(userText: string): void {
+    private async getBotResponse(userText: string): Promise<void> {
         this.state.isTyping = true;
         this.showTypingIndicator();
 
-        // Simple bot responses
-        const responses = [
-            `I received your message: "${userText}"`,
-            "That's interesting! Tell me more.",
-            "I understand what you're saying.",
-            'Thanks for sharing that with me.',
-            'How can I help you with that?',
-            'That sounds great!',
-            'I see what you mean.',
-        ];
+        try {
+            const request: ChatRequest = {
+                message: userText,
+                sessionId: this.state.currentSessionId || undefined,
+            };
 
-        const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+            const response = await chatService.sendMessage(request);
+            
+            // Hide typing indicator
+            this.hideTypingIndicator();
 
-        // Simulate typing delay
-        setTimeout(
-            () => {
-                this.hideTypingIndicator();
+            const botMessage: Message = {
+                id: uuidv4(),
+                text: response.message,
+                timestamp: new Date(response.timestamp),
+                sender: 'bot',
+            };
 
-                const botMessage: Message = {
-                    id: uuidv4(),
-                    text: randomResponse,
-                    timestamp: new Date(),
-                    sender: 'bot',
-                };
+            this.addMessage(botMessage);
+            this.state.isTyping = false;
+            this.setInputDisabled(false);
+            
+        } catch (error) {
+            console.error('Failed to get bot response:', error);
+            
+            // Hide typing indicator and show error message
+            this.hideTypingIndicator();
+            
+            const errorMessage: Message = {
+                id: uuidv4(),
+                text: 'Sorry, I\'m having trouble responding right now. Please try again.',
+                timestamp: new Date(),
+                sender: 'bot',
+            };
 
-                this.addMessage(botMessage);
-                this.state.isTyping = false;
-                this.setInputDisabled(false); // Re-enable input after bot responds
-            },
-            1000 + Math.random() * 2000
-        ); // Random delay between 1-3 seconds
+            this.addMessage(errorMessage);
+            this.state.isTyping = false;
+            this.setInputDisabled(false);
+        }
     }
 
     private setInputDisabled(disabled: boolean): void {
@@ -445,10 +449,19 @@ class ChatUI {
     }
 
     private scrollToBottom(): void {
-        // Scroll the entire page to bottom - this should work reliably
-        setTimeout(() => {
-            window.scrollTo(0, document.body.scrollHeight);
-        }, 100);
+    // Get the messages area container that has overflow-y-auto
+        const messagesArea = document.getElementById('messages-area');
+        if (messagesArea) {
+            // Use requestAnimationFrame for smooth scrolling after DOM updates
+            requestAnimationFrame(() => {
+                messagesArea.scrollTop = messagesArea.scrollHeight + 100; // Extra padding
+                // Also try scrollIntoView as backup
+                const lastMessage = this.messagesContainer.lastElementChild;
+                if (lastMessage) {
+                    lastMessage.scrollIntoView({ behavior: 'smooth', block: 'end' });
+                }
+            });
+        }
     }
 
     private formatTime(date: Date): string {
